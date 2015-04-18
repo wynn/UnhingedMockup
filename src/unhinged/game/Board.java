@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import unhinged.objects.DeathTrap;
 import unhinged.objects.Player;
 import unhinged.objects.Entity;
+import unhinged.objects.Portal;
 import unhinged.objects.Room;
 
 /**
@@ -29,19 +30,42 @@ public class Board {
 		{
 			Room r = new Room(this, left, top, right, bottom);
 		}
-				
+		
+		left = 10;
+		top = 10;
+		right = 15;
+		bottom = 15;
+		
+		if(legalCoordinates(left, top, right, bottom))
+		{
+			Room r = new Room(this, left, top, right, bottom);
+		}
+		
+		Portal po = new Portal(4, 4, 3, 4);
+		
+		
+		Portal por = new Portal(po, 11, 11, 12, 11);
+		po.setDestinationPortal(por);
+		gameboard[11][11] = por;	
+		gameboard[4][4] = po;
+		
 		//chessboard[3][3] = new Player(false);
 		gameboard[4][8] = new DeathTrap();
 		
 		Player p = new Player();
 		players.add(p);
 		
-		gameboard[4][7] = p;
+		gameboard[3][4] = p;
 		
 		Player p1 = new Player();
 		players.add(p1);
 		
 		gameboard[4][9] = p1;
+		
+		Player p2 = new Player();
+		players.add(p2);
+		
+		gameboard[4][3] = p2;
 	}
 	
 	//The game is over when all players have no health remaining (or are insane)

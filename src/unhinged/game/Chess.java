@@ -3,10 +3,12 @@ package unhinged.game;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
 import unhinged.objects.Actor;
 import unhinged.objects.DeathTrap;
 import unhinged.objects.Interactable;
 import unhinged.objects.Player;
+import unhinged.objects.Portal;
 import unhinged.objects.Wall;
 /**
  * todo
@@ -44,7 +46,7 @@ public class Chess {
 				if (p.health > 0) {
 					activePlayer = p;
 
-					while (input == null) {
+					while (true) {
 						try {
 							System.out.println();
 							System.out.print(p.getName() + "'s move: ");
@@ -52,6 +54,7 @@ public class Chess {
 							parseInput(input);
 							System.out.println();
 							drawBoard();
+							break;
 						} catch (IOException e) {
 							System.out.println("Invalid input. Try again.");
 						}
@@ -171,6 +174,18 @@ public class Chess {
 						//remove both the player and the death trap
 						board.gameboard[oldX][oldY] = null;
 						board.gameboard[newX][newY] = null;
+						return true;
+					}
+					
+					else if(i instanceof Portal)
+					{
+						if(board.gameboard[((Portal)i).other.destinationX][((Portal)i).other.destinationY] instanceof Player)
+						{
+							((Player)board.gameboard[((Portal)i).other.destinationX][((Portal)i).other.destinationY]).health = 0;
+							System.out.println(board.gameboard[((Portal)i).other.destinationX][((Portal)i).other.destinationY].getName() + " has been telefragged!");
+						}
+						board.gameboard[((Portal)i).other.destinationX][((Portal)i).other.destinationY] = board.gameboard[oldX][oldY];
+						board.gameboard[oldX][oldY] = null;
 						return true;
 					}
 				}

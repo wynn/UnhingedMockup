@@ -3,12 +3,13 @@ package unhinged.objects;
 
 public class Player extends Actor {
 	
-	public static int playerNumber = 1;
+	public static int playerNumber = 0;
 	private String symbol = "P";
 	
 	public Player(){
+		playerNumber++;
 		this.setAllied(true);
-		this.setName("Player " + playerNumber++);
+		this.setName("Player " + playerNumber);
 		this.setSymbol(this.symbol + playerNumber); 
 	}
 
