@@ -11,7 +11,7 @@ public class Room {
 	int right = 0;
 	int bottom = 0;
 	
-	public Room(Board board, int left, int top, int right, int bottom)
+	public Room(Board board, int left, int top, int right, int bottom) throws IllegalArgumentException
 	{
 		this.left = left;
 		this.top = top;
@@ -22,9 +22,16 @@ public class Room {
 		{
 			for(int y = top; y <= bottom; y++)
 			{
-				if(board.legalCoordinate(x, y) && board.gameboard[x][y] == null && (y == bottom || y == top) || (x == left || x == right) )
+				if(board.legalCoordinate(x, y) && board.gameboard[x][y] == null)
 				{
-					board.gameboard[x][y] = new Wall();
+					if((y == bottom || y == top) || (x == left || x == right))
+					{
+						board.gameboard[x][y] = new Wall();
+					}	
+				}
+				else
+				{
+					throw new IllegalArgumentException();
 				}
 			}
 		}

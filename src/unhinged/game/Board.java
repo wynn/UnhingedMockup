@@ -6,6 +6,7 @@ import unhinged.objects.DeathTrap;
 import unhinged.objects.Player;
 import unhinged.objects.Entity;
 import unhinged.objects.Portal;
+import unhinged.objects.PortalRoom;
 import unhinged.objects.Room;
 
 /**
@@ -24,30 +25,36 @@ public class Board {
 	}
 	
 	public void initializeBoard(){
+		PortalRoom portalRoom1 = null;
 		
-		int left = 0, top = 0, right = 5, bottom = 5;
-		if(legalCoordinates(left, top, right, bottom))
+		try
 		{
-			Room r = new Room(this, left, top, right, bottom);
+			int left = 0, top = 0, right = 5, bottom = 5;
+			if(legalCoordinates(left, top, right, bottom))
+			{
+				portalRoom1 = new PortalRoom(this, left, top, right, bottom, true, true, true, true);
+				//Room r = new Room(this, left, top, right, bottom);
+			}
+		
+			left = 10;
+			top = 10;
+			right = 15;
+			bottom = 15;
+		
+			if(legalCoordinates(left, top, right, bottom))
+			{
+				Room r = new Room(this, left, top, right, bottom);
+			}
+		}
+		catch(Exception e)
+		{
+			System.out.println("Unable to initialize rooms! Walls would spawn on top of one or more entities, please restart the game and check your board initialization settings.");
+			return;
 		}
 		
-		left = 10;
-		top = 10;
-		right = 15;
-		bottom = 15;
-		
-		if(legalCoordinates(left, top, right, bottom))
-		{
-			Room r = new Room(this, left, top, right, bottom);
-		}
-		
-		Portal po = new Portal(4, 4, 3, 4);
-		
-		
-		Portal por = new Portal(po, 11, 11, 12, 11);
-		po.setDestinationPortal(por);
+		Portal por = new Portal(portalRoom1.bottomRight, 11, 11, 12, 11);
+		portalRoom1.bottomRight.setDestinationPortal(por);
 		gameboard[11][11] = por;	
-		gameboard[4][4] = po;
 		
 		//chessboard[3][3] = new Player(false);
 		gameboard[4][8] = new DeathTrap();
@@ -73,6 +80,7 @@ public class Board {
 	{
 		for(Player p: players)
 		{
+			//if(p.health > 0 && !p instanceof Monster) return false;
 			if(p.health > 0) return false;
 		}
 		
