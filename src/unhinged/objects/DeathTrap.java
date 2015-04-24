@@ -12,9 +12,9 @@ public class DeathTrap extends Trap{
 	}
 	
 	@Override
-	public boolean interact(Actor a) {
+	public boolean interact(Player a) {
 		System.out.println(a.getName() + " walked onto a " + this.getName() + " and has died!");
-		a.health = 0;
+		a.currHealth = 0;
 		return true;
 	}
 }

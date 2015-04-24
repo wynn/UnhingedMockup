@@ -2,12 +2,7 @@ package unhinged.game;
 
 import java.util.ArrayList;
 
-import unhinged.objects.DeathTrap;
-import unhinged.objects.Player;
-import unhinged.objects.Entity;
-import unhinged.objects.Portal;
-import unhinged.objects.PortalRoom;
-import unhinged.objects.Room;
+import unhinged.objects.*;
 
 /**
  *
@@ -18,7 +13,8 @@ public class Board {
 	public static int length = 20;
 	public static int width = 20;
 	public ArrayList<Player> players = new ArrayList<Player>();
-
+	Monster m;
+	
 	public Board(){
 		gameboard = new Entity[length][width];
 		initializeBoard();
@@ -26,6 +22,7 @@ public class Board {
 	
 	public void initializeBoard(){
 		PortalRoom portalRoom1 = null;
+		
 		
 		try
 		{
@@ -52,6 +49,8 @@ public class Board {
 			return;
 		}
 		
+		
+		
 		Portal por = new Portal(portalRoom1.bottomRight, 11, 11, 12, 11);
 		portalRoom1.bottomRight.setDestinationPortal(por);
 		gameboard[11][11] = por;	
@@ -59,7 +58,7 @@ public class Board {
 		//chessboard[3][3] = new Player(false);
 		gameboard[4][8] = new DeathTrap();
 		
-		Player p = new Player();
+		Medic p = new Medic();
 		players.add(p);
 		
 		gameboard[3][4] = p;
@@ -69,22 +68,31 @@ public class Board {
 		
 		gameboard[4][9] = p1;
 		
-		Player p2 = new Player();
+		Fighter p2 = new Fighter();
 		players.add(p2);
 		
 		gameboard[4][3] = p2;
+		
+		m = new Mindflayer();
+		gameboard[13][11] = m;
+		players.add(m);
 	}
 	
-	//The game is over when all players have no health remaining (or are insane)
+	//The game is over when all players have no health remaining (or are insane) or...
 	public boolean gameIsOver()
 	{
 		for(Player p: players)
 		{
-			//if(p.health > 0 && !p instanceof Monster) return false;
-			if(p.health > 0) return false;
+			if(p.health > 0 && !(p instanceof Monster)) return false;
 		}
 		
 		return true;
+	}
+
+	//when all monsters have been killed
+	public boolean isVictory()
+	{
+		return m != null && m.currHealth == 0;
 	}
 	
 	public static boolean legalCoordinates(int oldX, int oldY, int newX, int newY){

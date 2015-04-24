@@ -54,7 +54,7 @@ public class Portal extends Entity implements Interactable{
 	}
 	
 	@Override
-	public boolean interact(Actor a) {
+	public boolean interact(Player a) {
 		if(other != null)
 		{
 			System.out.println(a.getName() + " is using " + this.getName() + ".");	

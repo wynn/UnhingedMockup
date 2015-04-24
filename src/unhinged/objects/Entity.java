@@ -8,7 +8,7 @@ public abstract class Entity {
 		
 	private String symbol;
 	private String name;
-	private boolean allied = true;
+	public boolean allied = true;
 	
 	//all non-player and non-item entities will always be enemies
 	//all players and items will be allied entities
