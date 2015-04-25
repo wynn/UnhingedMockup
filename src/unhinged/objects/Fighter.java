@@ -1,5 +1,7 @@
 package unhinged.objects;
 
+import unhinged.objects.abilities.*;
+
 public class Fighter extends Player{
 
 
@@ -18,13 +20,8 @@ public class Fighter extends Player{
 		baseCD1 = 6;
 		baseCD2 = 6;
 		
-		baseTimeout1 = 4;
-		baseTimeout2 = 4;
-
-		
-		
-		health = baseHealth;
-		sanity = baseSanity;
+		maxHealth = baseHealth;
+		insanity = baseSanity;
 		
 		attack = baseAttack;
 		speed = baseSpeed;
@@ -38,18 +35,19 @@ public class Fighter extends Player{
 		CD1 = 0;
 		CD2 = 0;
 		
-		Timeout1 = 0;
-		Timeout2 = 0;
-		
 		riftStones = 0;
 		
 		usedPortal = false;
 		isVisible = true;
+		
+		this.abilities.add(new Steroids());
+		this.abilities.add(new Sprint());
+		
 		this.setName("Player" + " (" + this.className + ") " + playerNumber);
 	}
 	
 	
-	//Class Abilities
+	/*/Class Abilities
 	// ABILITY 1, cooldown is 'CD1'
 	void burstOfStrength(){
 		currAttack = currAttack + 1;
@@ -70,36 +68,5 @@ public class Fighter extends Player{
 	
 	void speedReset(){
 		currSpeed = speed;
-	}
-	
-	@Override
-	public void cleanUp(){ //RUNS AT END OF TURN, decrements CD's
-		////////////////////////////////////////////////////////
-		//Ability 1
-		if(CD1>0){
-			CD1 = CD1 - 1;
-		}
-		
-		if(Timeout1>0){
-			Timeout1 = Timeout1 - 1;
-		}
-		
-		if(Timeout1==0){
-			strengthReset();
-		}
-		////////////////////////////////////////////////////////
-		// Ability 2
-		if(CD2>0){
-			CD2 = CD2 - 1;
-		}
-		
-		if(Timeout2>0){
-			Timeout2 = Timeout2 - 1;
-		}
-		
-		if(Timeout2==0){
-			speedReset();
-		}
-
-	}// End CleanUp
+	}*/
 } // End Class Fighter

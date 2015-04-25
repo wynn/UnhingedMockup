@@ -11,6 +11,7 @@ import unhinged.objects.Interactable;
 import unhinged.objects.Player;
 import unhinged.objects.Portal;
 import unhinged.objects.Wall;
+import unhinged.objects.abilities.Ability;
 
 /**
  * TODO:
@@ -31,7 +32,8 @@ public class Unhinged {
 
 		board = new Board();
 		drawBoard();
-
+		
+		
 		while (true) {
 			input = null;
 
@@ -56,14 +58,23 @@ public class Unhinged {
 					while (true) {
 						try {
 							System.out.println();
-							System.out.print(p.getName() + "'s move: ");
+							System.out.println(p.getName() + "'s move:");
+							System.out.println("Abilities available:");
+							for(int i = 0; i < p.abilities.size(); i++)
+							{
+								Ability a = p.abilities.get(i);
+								System.out.println("Ability " + i + ": " + a.name + ": Current cooldown: " + a.currCooldown + " Max cooldown: " + a.maxCooldown );
+							}
+							System.out.println("Enter help for a description of every command.");
+							System.out.print("Enter a command: ");
 							input = br.readLine();
 							if (parseInput(input)) {
 								System.out.println();
 								drawBoard();
+								p.cleanUp();
 								break;
 							}
-						} catch (IOException e) {
+						} catch (Exception e) {
 							System.out.println("Invalid input. Try again.");
 						}
 					}
@@ -113,6 +124,8 @@ public class Unhinged {
 			add("move");
 			add("interact");
 			add("attack");
+			add("ability");
+			add("help");
 		}
 	};
 
@@ -124,22 +137,67 @@ public class Unhinged {
 			System.out.println("Invalid input. Please try again.");
 			return false;
 		}
+		
+		else if(command.equals("help"))
+		{
+			System.out.println("Enter positions in the format [column][row].");
+			System.out.println("Example position: a1");
+			System.out.println("move a1: Moves the active player to position a1.");
+			System.out.println("interact a1: Interacts with any interactable objects at a1.");
+			System.out.println("attack a1: Attacks a player of the opposite faction at a1.");
+			System.out.println("ability a1 n: Uses the nth ability on the player at a1.");
+			return false;
+		}
 
-		else if (commands.length == 3) {
-			String currentLoc = commands[1];
-			String newLoc = commands[2];
-			int oldX = 0, oldY = 0, newX = 0, newY = 0;
+		//else if (commands.length == 3) {
+		else if (commands.length >= 2) {
+			//String currentLoc = commands[1];
+			//String newLoc = commands[2];
+			
+			String newLoc = commands[1];
+			int oldX = -1, oldY = -1, newX = 0, newY = 0;
+			
+			//get the position of the current active player
+			for(int y = 0; y < board.gameboard.length; y++)
+			{
+				for(int x = 0; x < board.gameboard[y].length; x++)
+				{
+					if(board.gameboard[y][x] != null && board.gameboard[y][x].equals(activePlayer))
+					{
+						oldX = y;
+						oldY = x;
+					}
+				}
+			}
+			
+			if (newLoc.length() >= 2) {
+				newX = Board.fileToCoordinate(newLoc);
+				newY = Board.rankToCoordinate(newLoc);
+			}
+			
+			if(commands.length == 3)
+			{
+				int abilityNum = Integer.parseInt(commands[2]);
+				
+				if(abilityNum >= activePlayer.abilities.size())
+				{
+					System.out.println("Invalid input. Please try again.");
+					return false;
+				}
+				
+				return abilityMove(oldX, oldY, newX, newY, activePlayer.abilities.get(abilityNum));
+			}
 
-			if (currentLoc.length() >= 2 && newLoc.length() >= 2) {
+			/*if (currentLoc.length() >= 2 && newLoc.length() >= 2) {
 
 				oldX = Board.fileToCoordinate(currentLoc);
 				oldY = Board.rankToCoordinate(currentLoc);
 				newX = Board.fileToCoordinate(newLoc);
 				newY = Board.rankToCoordinate(newLoc);
-			}
+			}*/
 
 			// Interact with some object on the board
-			if (command.equals("interact")) {
+			else if (command.equals("interact")) {
 				return interactMove(oldX, oldY, newX, newY);
 			}
 
@@ -397,5 +455,65 @@ public class Unhinged {
 		}
 
 		return true;
+	}
+	
+	public static boolean abilityMove(int oldX, int oldY, int newX, int newY, Ability ability) {
+		
+		int deltaX = Math.abs(newX-oldX);
+		int deltaY = Math.abs(newY-oldY);
+		
+		//Players can only move one space at a time
+		if(deltaX > ability.range || deltaY > ability.range)
+		{
+			System.out.println("The target is out of range of the ability.");
+			return false;
+		}
+		
+		if(!ability.canUseAbility())
+		{
+			System.out.println("Ability is not ready yet.");
+			return false;
+		}
+		
+		// Check if coordinates are on the board
+		if (Board.legalCoordinates(oldX, oldY, newX, newY) == false) {
+			System.out.println("Illegal move, try again.");
+			return false;
+		}
+
+		// Check for existence of a piece at the old location
+		if (board.gameboard[oldX][oldY] == null) {
+			System.out.println("Illegal move, try again. No piece at first coordinate.");
+			return false;
+		}
+
+		if (!(board.gameboard[oldX][oldY] instanceof Player)) {
+			System.out.println("Invalid move.");
+			return false;
+		}
+
+		// Check for existence of a piece at the old location
+		if (board.gameboard[newX][newY] == null) {
+			System.out.println("There's nothing to use an ability on.");
+			return false;
+		}
+
+		if (board.gameboard[newX][newY] instanceof Wall) {
+			System.out.println("Invalid move, cannot use abilities on walls.");
+			return false;
+		}
+
+		Player caster = (Player) board.gameboard[oldX][oldY];
+		if (board.gameboard[newX][newY] instanceof Player) {
+			Player target = ((Player) board.gameboard[newX][newY]);
+
+			return ability.useAbility(caster, target);
+		}
+
+		else {
+			System.out.println("Invalid move.");
+			//System.out.println("Error, a check was not added.");
+			return false;
+		}
 	}
 }

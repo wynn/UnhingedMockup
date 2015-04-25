@@ -13,14 +13,10 @@ public class Mindflayer extends Monster{
 		baseCD1 = 6;
 		baseCD2 = 6;
 		baseCD3 = 6;
-		
-		baseTimeout1 = 4;
-		baseTimeout2 = 4;
-		baseTimeout3 = 4;
 
 		
 		
-		health = baseHealth;
+		maxHealth = baseHealth;
 		attack = baseAttack;
 		speed = baseSpeed;
 		
@@ -31,10 +27,6 @@ public class Mindflayer extends Monster{
 		CD1 = 0;
 		CD2 = 0;
 		CD3 = 0;
-		
-		Timeout1 = 0;
-		Timeout2 = 0;
-		Timeout3 = 0;
 		
 		
 		isVisible = true;

@@ -1,5 +1,9 @@
 package unhinged.objects;
 
+import java.util.ArrayList;
+
+import unhinged.objects.abilities.Ability;
+
 
 public class Player extends Actor {
 	
@@ -13,8 +17,8 @@ public class Player extends Actor {
 	public int baseSpeed;
 	
 	// Variable values used for Things in game
-	public int health = 1;
-	public int sanity;
+	public int maxHealth = 1;
+	public int insanity;
 
 	public int attack;
 	public int speed;
@@ -42,14 +46,7 @@ public class Player extends Actor {
 	public String[] items = new String[5];
 	public int riftStones;
 	
-	//Ablility Counters
-	public int baseTimeout1;
-	public int baseTimeout2;
-	public int baseTimeout3;
-
-	public int Timeout1;
-	public int Timeout2;
-	public int Timeout3;
+	public ArrayList<Ability> abilities = new ArrayList<Ability>();
 	
 	public Player(){
 		playerNumber++;
@@ -65,7 +62,7 @@ public class Player extends Actor {
 		int deltaY = Math.abs(newY-oldY);
 		
 		//Players can only move one space at a time
-		if(deltaX > 1 || deltaY > 1)
+		if(deltaX > currSpeed || deltaY > currSpeed)
 		{
 			return false;
 		}
@@ -75,6 +72,9 @@ public class Player extends Actor {
 	
 	//RUNS AT END OF TURN, decrements cooldowns
 	public void cleanUp(){ 
-
+		for(Ability a: abilities)
+		{
+			a.updateCooldown(this);
+		}
 	}
 }

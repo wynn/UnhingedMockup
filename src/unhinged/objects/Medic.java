@@ -1,5 +1,7 @@
 package unhinged.objects;
 
+import unhinged.objects.abilities.*;
+
 public class Medic extends Player {
 
 	// CONSTRUCTOR
@@ -17,12 +19,8 @@ public class Medic extends Player {
 		baseCD2 = 6;
 		baseCD3 = 6;
 
-		baseTimeout1 = 4;
-		baseTimeout2 = 4;
-		baseTimeout3 = 4;
-
-		health = baseHealth;
-		sanity = baseSanity;
+		maxHealth = baseHealth;
+		insanity = baseSanity;
 
 		attack = baseAttack;
 		speed = baseSpeed;
@@ -37,19 +35,18 @@ public class Medic extends Player {
 		CD2 = 0;
 		CD3 = 0;
 
-		Timeout1 = 0;
-		Timeout2 = 0;
-		Timeout3 = 0;
-
 		riftStones = 0;
 
 		usedPortal = false;
 		isVisible = true;
 		
+		this.abilities.add(new Cure());
+		this.abilities.add(new Heal());
+		
 		this.setName("Player" + " (" + this.className + ") " + playerNumber);
 	}
 
-	// Class Abilities
+	/*// Class Abilities
 	// //////////////////////////////////////////////////////////
 	// ABILITY 1, cooldown is 'CD1'
 	void heal(Player p) {
@@ -65,8 +62,8 @@ public class Medic extends Player {
 
 			p.currHealth = p.currHealth + 3;
 
-			if (p.currHealth > p.health) {
-				p.currHealth = p.health;
+			if (p.currHealth > p.maxHealth) {
+				p.currHealth = p.maxHealth;
 			}
 
 		}
@@ -80,10 +77,10 @@ public class Medic extends Player {
 	// //////////////////////////////////////////////////////////
 	// ABILITY 2, cooldown is 'CD2'
 	void cure(Player p) {
-		p.sanity = p.sanity - 5;
+		p.insanity = p.insanity - 5;
 
-		if (p.sanity < 0) {
-			p.sanity = 0;
+		if (p.insanity < 0) {
+			p.insanity = 0;
 		}
 
 		CD2 = baseCD2;
@@ -107,28 +104,5 @@ public class Medic extends Player {
 
 		CD3 = baseCD3;
 
-	}// END Revive
-		// //////////////////////////////////////////////////////////
-
-	@Override
-	public void cleanUp() { // RUNS AT END OF TURN, decrements CD's
-		// //////////////////////////////////////////////////////
-		// Ability 1
-		if (CD1 > 0) {
-			CD1 = CD1 - 1;
-		}
-
-		// //////////////////////////////////////////////////////
-		// Ability 2
-		if (CD2 > 0) {
-			CD2 = CD2 - 1;
-		}
-		// //////////////////////////////////////////////////////
-		// Ability 3
-		if (CD3 > 0) {
-			CD3 = CD3 - 1;
-		}
-
-	}// End CleanUp
-
+	}*/
 }

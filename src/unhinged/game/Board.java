@@ -58,15 +58,15 @@ public class Board {
 		//chessboard[3][3] = new Player(false);
 		gameboard[4][8] = new DeathTrap();
 		
-		Medic p = new Medic();
-		players.add(p);
+		//Medic p = new Medic();
+		//players.add(p);
 		
-		gameboard[3][4] = p;
+		//gameboard[3][4] = p;
 		
-		Player p1 = new Player();
-		players.add(p1);
+		//Player p1 = new Player();
+		//players.add(p1);
 		
-		gameboard[4][9] = p1;
+		//gameboard[4][9] = p1;
 		
 		Fighter p2 = new Fighter();
 		players.add(p2);
@@ -83,7 +83,7 @@ public class Board {
 	{
 		for(Player p: players)
 		{
-			if(p.health > 0 && !(p instanceof Monster)) return false;
+			if(p.maxHealth > 0 && !(p instanceof Monster)) return false;
 		}
 		
 		return true;

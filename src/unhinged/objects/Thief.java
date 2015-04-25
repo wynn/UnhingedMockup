@@ -16,13 +16,8 @@ public class Thief extends Player {
 				baseCD1 = 6;
 				baseCD2 = 6;
 				
-				baseTimeout1 = 4;
-				baseTimeout2 = 4;
-				baseTimeout3 = 4;
-				
-				
-				health = baseHealth;
-				sanity = baseSanity;
+				maxHealth = baseHealth;
+				insanity = baseSanity;
 				
 				attack = baseAttack;
 				speed = baseSpeed;
@@ -36,10 +31,6 @@ public class Thief extends Player {
 				CD1 = 0;
 				CD2 = 0;
 				CD3 = 0;
-				
-				Timeout1 = 0;
-				Timeout2 = 0;
-				Timeout3 = 0;
 				
 				riftStones = 0;
 				
