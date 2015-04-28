@@ -1,6 +1,7 @@
 package unhinged.game;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import unhinged.objects.*;
 
@@ -21,23 +22,66 @@ public class Board {
 	}
 	
 	public void initializeBoard(){
-		PortalRoom portalRoom1 = null;
-		
-		
 		try
 		{
-			int left = 0, top = 0, right = 5, bottom = 5;
+			//room 1
+			int left = 0, top = 7, right = 4, bottom = 11;
 			if(legalCoordinates(left, top, right, bottom))
 			{
-				portalRoom1 = new PortalRoom(this, left, top, right, bottom, true, true, true, true);
-				//Room r = new Room(this, left, top, right, bottom);
+				Room r = new Room(this, left, top, right, bottom);
 			}
-		
-			left = 10;
-			top = 10;
-			right = 15;
-			bottom = 15;
-		
+			
+			//room 2
+			left = 4; top = 5; right = 8; bottom = 13;
+			if(legalCoordinates(left, top, right, bottom))
+			{
+				Room r = new Room(this, left, top, right, bottom);
+			}
+			
+			//room 3
+			left = 4;top = 1;right = 10;bottom = 5;
+			if(legalCoordinates(left, top, right, bottom))
+			{
+				Room r = new Room(this, left, top, right, bottom);
+			}
+			
+			//room 4
+			left = 10;top = 0;right = 15;bottom = 5;
+			if(legalCoordinates(left, top, right, bottom))
+			{
+				Room r = new Room(this, left, top, right, bottom);
+			}
+			
+			//room 5
+			left = 8;top = 5;right = 12;bottom = 9;
+			if(legalCoordinates(left, top, right, bottom))
+			{
+				Room r = new Room(this, left, top, right, bottom);
+			}
+			
+			//room 6
+			left = 12;top = 6;right = 15;bottom = 12;
+			if(legalCoordinates(left, top, right, bottom))
+			{
+				Room r = new Room(this, left, top, right, bottom);
+			}
+			
+			//room 7
+			left = 8;top = 9;right = 12;bottom = 13;
+			if(legalCoordinates(left, top, right, bottom))
+			{
+				Room r = new Room(this, left, top, right, bottom);
+			}
+			
+			//room 8
+			left = 4;top = 13;right = 10;bottom = 18;
+			if(legalCoordinates(left, top, right, bottom))
+			{
+				Room r = new Room(this, left, top, right, bottom);
+			}
+			
+			//room 9
+			left = 10;top = 13;right = 15;bottom = 18;
 			if(legalCoordinates(left, top, right, bottom))
 			{
 				Room r = new Room(this, left, top, right, bottom);
@@ -49,32 +93,90 @@ public class Board {
 			return;
 		}
 		
+		//manually add doors...
+		//left and right doors
 		
+		//door 1
+		int y = 8, x = 4;
+		gameboard[x][y] = new Door(x-1, y, x+1, y);
 		
-		Portal por = new Portal(portalRoom1.bottomRight, 11, 11, 12, 11);
-		portalRoom1.bottomRight.setDestinationPortal(por);
-		gameboard[11][11] = por;	
+		//door 2
+		y = 9; x = 4;
+		gameboard[x][y] = new Door(x-1, y, x+1, y);
+		
+		//door 3
+		y = 10; x = 4;
+		gameboard[x][y] = new Door(x-1, y, x+1, y);
+		
+		//door 4
+		y = 7; x = 8;
+		gameboard[x][y] = new Door(x-1, y, x+1, y);
+		
+		//door 5
+		y = 11; x = 8;
+		gameboard[x][y] = new Door(x-1, y, x+1, y);
+		
+		//door 6
+		y = 2; x = 10;
+		gameboard[x][y] = new Door(x-1, y, x+1, y);
+		
+		//door 7
+		y = 8; x = 12;
+		gameboard[x][y] = new Door(x-1, y, x+1, y);
+		
+		//door 8
+		y = 10; x = 12;
+		gameboard[x][y] = new Door(x-1, y, x+1, y);
+		
+		//door 9
+		y = 15; x = 10;
+		gameboard[x][y] = new Door(x-1, y, x+1, y);
+		
+		//top and bottom doors
+		
+		//door 10
+		y = 5; x = 6;
+		gameboard[x][y] = new Door(x, y+1, x, y-1);
+				
+		//door 11
+		y = 5; x = 9;
+		gameboard[x][y] = new Door(x, y+1, x, y-1);
+		
+		//door 10
+		y = 13; x = 6;
+		gameboard[x][y] = new Door(x, y+1, x, y-1);
+						
+		//door 11
+		y = 13; x = 9;
+		gameboard[x][y] = new Door(x, y+1, x, y-1);
 		
 		//chessboard[3][3] = new Player(false);
-		gameboard[4][8] = new DeathTrap();
+		//gameboard[4][8] = new DeathTrap();
 		
 		Medic p = new Medic();
 		players.add(p);
 		
-		gameboard[3][4] = p;
-		
-		//Player p1 = new Player();
-		//players.add(p1);
-		
-		//gameboard[4][9] = p1;
+		gameboard[3][8] = p;
 		
 		Fighter p2 = new Fighter();
 		players.add(p2);
 		
-		gameboard[4][3] = p2;
+		gameboard[3][9] = p2;
 		
 		m = new Mindflayer();
-		gameboard[13][11] = m;
+		
+		Random r = new Random();
+		int rnd = r.nextInt(3);
+		if(rnd == 0){
+			gameboard[14][9] = m;
+		}
+		if(rnd == 1){
+			gameboard[14][3] = m;
+		}
+		if(rnd == 2){
+			gameboard[14][15] = m;
+		}
+		
 		players.add(m);
 	}
 	

@@ -4,9 +4,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Random;
 
 import unhinged.objects.Actor;
 import unhinged.objects.DeathTrap;
+import unhinged.objects.Door;
 import unhinged.objects.Interactable;
 import unhinged.objects.Player;
 import unhinged.objects.Portal;
@@ -76,7 +78,7 @@ public class Unhinged {
 								break;
 							}
 						} catch (Exception e) {
-							System.out.println("Invalid input. Try again.");
+							System.out.println("Invalid input. Try another input.");
 						}
 					}
 				}
@@ -134,10 +136,18 @@ public class Unhinged {
 	public static boolean parseInput(String input) {
 		String[] commands = input.split(" ");
 		String command = commands[0];
-
+		
 		if (!validCommands.contains(command)) {
 			System.out.println("Invalid input. Please try again.");
 			return false;
+		}
+		
+		Random r = new Random();
+	    
+	    if(r.nextInt(101) < activePlayer.insanity)
+		{
+			System.out.println("Your insanity causes you to wander in circles. You do nothing for one turn.");
+			return true;
 		}
 		
 		else if(command.equals("pass"))
@@ -274,34 +284,8 @@ public class Unhinged {
 			if (board.gameboard[newX][newY] instanceof Interactable) {
 				Interactable i = (Interactable) board.gameboard[newX][newY];
 
-				if (i.interact(p)) {
-					if (i instanceof DeathTrap) {
-						// remove both the player and the death trap
-						board.gameboard[oldX][oldY] = null;
-						board.gameboard[newX][newY] = null;
-						return true;
-					}
-
-					else if (i instanceof Portal) {
-						// X, Y of coordinate of where the player ends up after
-						// using the portal
-						int destX = ((Portal) i).other.destinationX;
-						int destY = ((Portal) i).other.destinationY;
-
-						// Protip: Since the enemy monster will extend Player, a
-						// possible victory condition
-						// would be to telefrag the monster for an instant kill.
-						if (board.gameboard[destX][destY] instanceof Player) {
-							((Player) board.gameboard[destX][destY]).currHealth = 0;
-							System.out.println(board.gameboard[destX][destY].getName() + " has been telefragged!");
-						}
-
-						board.gameboard[destX][destY] = null;
-						board.gameboard[destX][destY] = board.gameboard[oldX][oldY];
-						board.gameboard[oldX][oldY] = null;
-						return true;
-					}
-				}
+				System.out.println("There appears to be something there. Try interacting with it.");
+				return false;
 			}
 
 			else {
@@ -391,6 +375,43 @@ public class Unhinged {
 						board.gameboard[oldX][oldY] = null;
 						return true;
 					}
+					
+					else if (i instanceof Door) {
+						Door d = ((Door) i);
+						
+						int frontX = d.frontX;
+						int frontY = d.frontY;
+						int backX = d.backX;
+						int backY = d.backY;
+						
+						if (board.gameboard[frontX][frontY].equals(activePlayer)) {
+							if (board.gameboard[backX][backY] != null)
+							{
+								System.out.println("There appears to be an object in front of the door.");
+								return false;
+							}
+							else
+							{
+								board.gameboard[backX][backY] = board.gameboard[frontX][frontY];
+								board.gameboard[frontX][frontY] = null;
+								return true;
+							}
+						}
+						
+						else if (board.gameboard[backX][backY].equals(activePlayer)) {
+							if (board.gameboard[frontX][frontY] != null)
+							{
+								System.out.println("There appears to be an object in front of the door.");
+								return false;
+							}
+							else
+							{
+								board.gameboard[frontX][frontY] = board.gameboard[backX][backY];
+								board.gameboard[backX][backY] = null;
+								return true;
+							}
+						}
+					}
 				}
 			}
 
@@ -446,14 +467,40 @@ public class Unhinged {
 					System.out.println(defender.getName() + " was just an illusion!");
 					System.out.println(attacker.getName() + " misses " + defender.getName() + ".");
 				} else {
-					System.out.println(attacker.getName() + " hits " + defender.getName() + "for " + attacker.currAttack
-							+ " damage!");
+					Random r = new Random();
+					//roll to see if the attacker misses
+					if(r.nextFloat() < attacker.insanity)
+					{
+						//if the attacker misses, 50% chance of hitting himself
+						if(r.nextInt(2) == 0)
+						{
+							System.out.println(attacker.getName() + " misses and hits himself for " + attacker.currAttack
+									+ " damage!");
 
-					defender.currHealth -= attacker.currAttack;
+							attacker.currHealth -= attacker.currAttack;
+						}
+						else
+						{
+							System.out.println(attacker.getName() + " misses " + defender.getName() + ".");
+						}
+					}
+					
+					else
+					{
+						System.out.println(attacker.getName() + " hits " + defender.getName() + "for " + attacker.currAttack
+								+ " damage!");
+
+						defender.currHealth -= attacker.currAttack;
+					}
 
 					if (defender.currHealth < 0) {
 						System.out.println(defender.getName() + " has been killed by " + attacker.getName() + "!");
 						board.gameboard[newX][newY] = null;
+					}
+					
+					if (attacker.currHealth < 0) {
+						System.out.println(attacker.getName() + " has died while attacking " + defender.getName() + "!");
+						board.gameboard[oldX][oldY] = null;
 					}
 				}
 			}

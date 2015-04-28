@@ -22,7 +22,7 @@ public class Room {
 		{
 			for(int y = top; y <= bottom; y++)
 			{
-				if(board.legalCoordinate(x, y) && board.gameboard[x][y] == null)
+				if(board.legalCoordinate(x, y) && (board.gameboard[x][y] == null || board.gameboard[x][y] instanceof Wall))
 				{
 					if((y == bottom || y == top) || (x == left || x == right))
 					{
