@@ -23,7 +23,7 @@ public class Steroids extends Ability{
 		
 		this.currCooldown = this.maxCooldown;
 		self.insanity += 5;
-		self.attack += 1;
+		self.currAttack += 1;
 		
 		return true;
 	}

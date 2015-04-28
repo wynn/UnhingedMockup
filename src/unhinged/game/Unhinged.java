@@ -12,6 +12,7 @@ import unhinged.objects.Player;
 import unhinged.objects.Portal;
 import unhinged.objects.Wall;
 import unhinged.objects.abilities.Ability;
+import unhinged.objects.abilities.AreaAbility;
 
 /**
  * TODO:
@@ -126,6 +127,7 @@ public class Unhinged {
 			add("attack");
 			add("ability");
 			add("help");
+			add("pass");
 		}
 	};
 
@@ -138,6 +140,12 @@ public class Unhinged {
 			return false;
 		}
 		
+		else if(command.equals("pass"))
+		{
+			System.out.println("Passed turn.");
+			return true;
+		}
+		
 		else if(command.equals("help"))
 		{
 			System.out.println("Enter positions in the format [column][row].");
@@ -146,6 +154,8 @@ public class Unhinged {
 			System.out.println("interact a1: Interacts with any interactable objects at a1.");
 			System.out.println("attack a1: Attacks a player of the opposite faction at a1.");
 			System.out.println("ability a1 n: Uses the nth ability on the player at a1.");
+			System.out.println("pass: passes your move.");
+			System.out.println("Commands are case sensitive.");
 			return false;
 		}
 
@@ -436,10 +446,10 @@ public class Unhinged {
 					System.out.println(defender.getName() + " was just an illusion!");
 					System.out.println(attacker.getName() + " misses " + defender.getName() + ".");
 				} else {
-					System.out.println(attacker.getName() + " hits " + defender.getName() + "for " + attacker.attack
+					System.out.println(attacker.getName() + " hits " + defender.getName() + "for " + attacker.currAttack
 							+ " damage!");
 
-					defender.currHealth -= attacker.attack;
+					defender.currHealth -= attacker.currAttack;
 
 					if (defender.currHealth < 0) {
 						System.out.println(defender.getName() + " has been killed by " + attacker.getName() + "!");
@@ -491,6 +501,13 @@ public class Unhinged {
 			System.out.println("Invalid move.");
 			return false;
 		}
+		
+		Player caster = (Player) board.gameboard[oldX][oldY];
+		
+		if(ability instanceof AreaAbility)
+		{
+			return ((AreaAbility)ability).useAbility(caster, board, oldX, oldY, newX, newY);
+		}
 
 		// Check for existence of a piece at the old location
 		if (board.gameboard[newX][newY] == null) {
@@ -503,7 +520,7 @@ public class Unhinged {
 			return false;
 		}
 
-		Player caster = (Player) board.gameboard[oldX][oldY];
+		
 		if (board.gameboard[newX][newY] instanceof Player) {
 			Player target = ((Player) board.gameboard[newX][newY]);
 

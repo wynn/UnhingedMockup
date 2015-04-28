@@ -11,29 +11,9 @@ public class Fighter extends Player{
 	public Fighter(){
 		className = "Fighter";
 		
-		baseHealth = 4;
-		baseSanity = 0;
-
-		baseAttack = 2;
-		baseSpeed = 3;
-		
-		baseCD1 = 6;
-		baseCD2 = 6;
-		
-		maxHealth = baseHealth;
-		insanity = baseSanity;
-		
-		attack = baseAttack;
-		speed = baseSpeed;
-		
-		currHealth = baseHealth;
-		currSanity = baseSanity;
-
-		currAttack = baseAttack;
-		currSpeed = baseSpeed;
-	
-		CD1 = 0;
-		CD2 = 0;
+		currHealth = maxHealth = 7;
+		currAttack = baseAttack = 2;
+		currSpeed = baseSpeed = 1;
 		
 		riftStones = 0;
 		

@@ -2,17 +2,17 @@ package unhinged.objects.abilities;
 
 import unhinged.objects.Player;
 
-public class Sprint extends Ability{
-	
-	int baseTime = 4;
+public class Hide extends Ability{
+
+	int baseTime = 2;
 	int currTime = 0;
 	
-	public Sprint()
+	public Hide()
 	{
-		this.maxCooldown = 6;
-		name = "Sprint";
+		this.maxCooldown = 4;
+		name = "Hide";
 	}
-
+	
 	@Override
 	public boolean useAbility(Player self, Player other) {
 		if(!self.equals(other))
@@ -21,11 +21,11 @@ public class Sprint extends Ability{
 			return false;
 		}
 		
-		System.out.println(self.getName() + " uses " + this.name + ", boosting his speed by 1 for the next 3 turns.");
+		System.out.println(self.getName() + " uses " + this.name + ", turning invisible until the end of his next turn.");
 		
 		this.currCooldown = this.maxCooldown;
 		this.currTime = baseTime;
-		self.currSpeed += 1;
+		self.isVisible = false;
 		
 		return true;
 	}
@@ -41,7 +41,7 @@ public class Sprint extends Ability{
 			if(currTime == 0)
 			{
 				System.out.println(this.name + " has expired.");
-				p.currSpeed = p.baseSpeed;
+				p.isVisible = true;
 			}
 			else
 			{

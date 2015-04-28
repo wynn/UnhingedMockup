@@ -11,36 +11,19 @@ public class Player extends Actor {
 	private String symbol = "P";
 	protected String className = "Player";
 	
-	public int baseHealth;
-	public int baseSanity;
 	public int baseAttack;
-	public int baseSpeed;
-	
-	// Variable values used for Things in game
-	public int maxHealth = 1;
-	public int insanity;
-
-	public int attack;
-	public int speed;
-	
-	public int currHealth = 1;
-	public int currSanity;
-
 	public int currAttack;
+	
+	public int baseSpeed;
 	public int currSpeed;
-
-	public boolean usedPortal;
 	
-	public boolean isVisible;
+	public int maxHealth = 1;
+	public int currHealth = 1;
 	
-	//Ability Cooldowns
-	public int baseCD1;
-	public int baseCD2;
-	public int baseCD3;
-
-	public int CD1;
-	public int CD2;
-	public int CD3;
+	public int insanity = 0;
+	public boolean usedPortal = false;
+	
+	public boolean isVisible = true;
 
 	//Character Inventory
 	public String[] items = new String[5];

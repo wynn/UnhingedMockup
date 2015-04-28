@@ -1,39 +1,25 @@
 package unhinged.objects;
 
+import unhinged.objects.abilities.*;
+
 public class Mindflayer extends Monster{
 	//CONSTRUCTOR
 	public Mindflayer(){
 		
 		className = "Mindflayer";
 		
-		baseHealth = 11;
-		baseAttack = 2;
-		baseSpeed = 3;
+		currHealth = maxHealth = 11;
+		currAttack = baseAttack = 2;
+		currSpeed = baseSpeed = 2;
 		
-		baseCD1 = 6;
-		baseCD2 = 6;
-		baseCD3 = 6;
-
-		
-		
-		maxHealth = baseHealth;
-		attack = baseAttack;
-		speed = baseSpeed;
-		
-		currHealth = baseHealth;
-		currAttack = baseAttack;
-		currSpeed = baseSpeed;
-	
-		CD1 = 0;
-		CD2 = 0;
-		CD3 = 0;
-		
+		this.abilities.add(new Teleport());
+		this.abilities.add(new ConfuseRay());
 		
 		isVisible = true;
 		this.setName("Player" + " (" + this.className + ") " + playerNumber);
 	}
 	
-	//Class Abilities
+	/*/Class Abilities
 	////////////////////////////////////////////////////////////
 	// ABILITY 1, cooldown is 'CD1'
 	void teleport(){
@@ -87,5 +73,5 @@ public class Mindflayer extends Monster{
 		}
 
 		
-	}// End CleanUp
+	}/*/ 
 }

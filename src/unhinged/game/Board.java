@@ -58,10 +58,10 @@ public class Board {
 		//chessboard[3][3] = new Player(false);
 		gameboard[4][8] = new DeathTrap();
 		
-		//Medic p = new Medic();
-		//players.add(p);
+		Medic p = new Medic();
+		players.add(p);
 		
-		//gameboard[3][4] = p;
+		gameboard[3][4] = p;
 		
 		//Player p1 = new Player();
 		//players.add(p1);

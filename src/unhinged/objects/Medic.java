@@ -9,31 +9,9 @@ public class Medic extends Player {
 		
 		className = "Medic";
 		
-		baseHealth = 6;
-		baseSanity = 0;
-
-		baseAttack = 1;
-		baseSpeed = 3;
-
-		baseCD1 = 6;
-		baseCD2 = 6;
-		baseCD3 = 6;
-
-		maxHealth = baseHealth;
-		insanity = baseSanity;
-
-		attack = baseAttack;
-		speed = baseSpeed;
-
-		currHealth = baseHealth;
-		currSanity = baseSanity;
-
-		currAttack = baseAttack;
-		currSpeed = baseSpeed;
-
-		CD1 = 0;
-		CD2 = 0;
-		CD3 = 0;
+		currHealth = maxHealth = 4;
+		currAttack = baseAttack = 1;
+		currSpeed = baseSpeed = 1;
 
 		riftStones = 0;
 
